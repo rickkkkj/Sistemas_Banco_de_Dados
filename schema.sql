@@ -1,0 +1,58 @@
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE PARTICIPANTE (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    NOME TEXT NOT NULL,
+    EMAIL TEXT NOT NULL UNIQUE,
+    TELEFONE TEXT
+);
+
+CREATE TABLE EVENTO (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    NOME TEXT NOT NULL,
+    DESCRICAO TEXT,
+    LOCAL TEXT NOT NULL,
+    DATA TEXT NOT NULL
+);
+
+CREATE TABLE PAGAMENTO(
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ID_INSCRICAO INTEGER UNIQUE NOT NULL REFERENCES INSCRICAO(ID),
+    VALOR REAL CHECK(VALOR >= 0),
+    DATA_PAGAMENTO TEXT,
+    STATUS TEXT 
+);
+
+CREATE TABLE INSCRICAO (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ID_EVENTO INTEGER NOT NULL REFERENCES EVENTO(ID),
+    ID_PARTICIPANTE INTEGER NOT NULL REFERENCES PARTICIPANTE(ID),
+    DATA_INSCRICAO TEXT,
+    STATUS TEXT
+);
+
+-- insercoes 
+
+INSERT INTO PARTICIPANTE (NOME, EMAIL, TELEFONE) VALUES
+('Ana Silva', 'ana@email.com', '99999-1111'),
+('Bruno Costa', 'bruno@email.com', '99999-2222'),
+('Carlos Lima', 'carlos@email.com', '99999-3333');
+
+INSERT INTO EVENTO (NOME, DESCRICAO, LOCAL, DATA) VALUES
+('Seminário de Tecnologia', 'Seminário sobre inovação em TI', 'Auditório A', '2025-09-10'),
+('Workshop de Programação', 'Workshop prático de Java', 'Sala 101', '2025-09-12');
+
+INSERT INTO INSCRICAO (ID_EVENTO, ID_PARTICIPANTE, DATA_INSCRICAO, STATUS) VALUES
+(1, 1, '2025-09-01', 'confirmada'),
+(1, 2, '2025-09-01', 'confirmada'),
+(2, 2, '2025-09-02', 'confirmada'),
+(2, 3, '2025-09-02', 'cancelada');
+
+INSERT INTO PAGAMENTO (ID_INSCRICAO, VALOR, DATA_PAGAMENTO, STATUS) VALUES
+(1, 150.00, '2025-09-03', 'pago'),
+(2, 150.00, '2025-09-03', 'pendente'),
+(3, 200.00, '2025-09-04', 'pago'),
+(4, 200.00, '2025-09-04', 'pendente');
+
+-- Utilizei IA apenas para conferir erros de sintaxe e se estava de acordo com a atividade
+-- e para gerar exemplos de insertes como nome email e etc.
